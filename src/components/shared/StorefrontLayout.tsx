@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { ShoppingCart, Search, Heart, Menu, User, ChevronDown } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { brand } from '@/config/brand.config'
 import { useAuthStore } from '@/stores/authStore'
 import { useCartStore } from '@/stores/cartStore'
@@ -26,9 +26,18 @@ export function StorefrontLayout({ children }: Props) {
   const navigate = useNavigate()
   const cartCount = items.reduce((s, i) => s + i.qty, 0)
 
+  // Navigate to search page automatically as user types (400ms debounce)
+  useEffect(() => {
+    if (!searchQuery.trim()) return
+    const timer = setTimeout(() => {
+      navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`)
+    }, 400)
+    return () => clearTimeout(timer)
+  }, [searchQuery, navigate])
+
   function handleSearch(e: React.FormEvent) {
     e.preventDefault()
-    if (searchQuery.trim()) navigate(`/search?q=${encodeURIComponent(searchQuery)}`)
+    if (searchQuery.trim()) navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`)
   }
 
   return (

@@ -74,10 +74,7 @@ export function SearchPage() {
 
   function handleSearch(e: React.FormEvent) {
     e.preventDefault()
-    const params: Record<string, string> = {}
-    if (search) params.q = search
-    if (selectedCat) params.cat = selectedCat
-    setSearchParams(params)
+    // no-op — search is driven by debounce, kept for accessibility (Enter key)
   }
 
   const hasActiveFilters = !!q || !!selectedCat || !!activeTag
@@ -149,10 +146,19 @@ export function SearchPage() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search by name, category, tag…"
-              className="pl-9"
+              className="pl-9 pr-9"
+              autoFocus
             />
+            {search && (
+              <button
+                type="button"
+                onClick={() => { setSearch(''); setDebouncedSearch('') }}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            )}
           </div>
-          <Button type="submit" variant="brand">Search</Button>
           <Button type="button" variant="outline" onClick={() => setShowFilters(!showFilters)} className="lg:hidden gap-1.5">
             <SlidersHorizontal className="h-4 w-4" />
             Filters
