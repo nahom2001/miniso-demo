@@ -22,6 +22,7 @@ export function StorefrontLayout({ children }: Props) {
   const { language, currency, setLanguage, setCurrency } = useUIStore()
   const [searchQuery, setSearchQuery] = useState('')
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [profileOpen, setProfileOpen] = useState(false)
   const navigate = useNavigate()
   const cartCount = items.reduce((s, i) => s + i.qty, 0)
 
@@ -75,22 +76,33 @@ export function StorefrontLayout({ children }: Props) {
             </Link>
 
             {isAuthenticated ? (
-              <div className="relative group">
-                <Button variant="ghost" size="sm" className="gap-1">
+              <div className="relative">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="gap-1"
+                  onClick={() => setProfileOpen((o) => !o)}
+                >
                   <User className="h-4 w-4" />
                   <span className="hidden sm:block max-w-[80px] truncate">{user?.name.split(' ')[0]}</span>
-                  <ChevronDown className="h-3 w-3" />
+                  <ChevronDown className={cn('h-3 w-3 transition-transform', profileOpen && 'rotate-180')} />
                 </Button>
-                <div className="absolute right-0 top-full mt-1 w-48 rounded-lg border bg-white shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50">
-                  <Link to="/account" className="block px-4 py-2.5 text-sm hover:bg-gray-50">{t('nav.account')}</Link>
-                  <Link to="/account/orders" className="block px-4 py-2.5 text-sm hover:bg-gray-50">{t('nav.orders')}</Link>
-                  <Link to="/account/wishlist" className="block px-4 py-2.5 text-sm hover:bg-gray-50">{t('nav.wishlist')}</Link>
-                  {(user?.role === 'admin' || user?.role === 'staff' || user?.role === 'manager') && (
-                    <Link to="/admin" className="block px-4 py-2.5 text-sm hover:bg-gray-50 text-brand-600 font-medium">{t('nav.admin')}</Link>
-                  )}
-                  <hr className="my-1" />
-                  <button onClick={logout} className="block w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 text-destructive">{t('nav.logout')}</button>
-                </div>
+                {profileOpen && (
+                  <>
+                    {/* Backdrop to close on outside click */}
+                    <div className="fixed inset-0 z-40" onClick={() => setProfileOpen(false)} />
+                    <div className="absolute right-0 top-full mt-1 w-48 rounded-lg border bg-white shadow-lg z-50">
+                      <Link to="/account" onClick={() => setProfileOpen(false)} className="block px-4 py-2.5 text-sm hover:bg-gray-50">{t('nav.account')}</Link>
+                      <Link to="/account/orders" onClick={() => setProfileOpen(false)} className="block px-4 py-2.5 text-sm hover:bg-gray-50">{t('nav.orders')}</Link>
+                      <Link to="/account/wishlist" onClick={() => setProfileOpen(false)} className="block px-4 py-2.5 text-sm hover:bg-gray-50">{t('nav.wishlist')}</Link>
+                      {(user?.role === 'admin' || user?.role === 'staff' || user?.role === 'manager') && (
+                        <Link to="/admin" onClick={() => setProfileOpen(false)} className="block px-4 py-2.5 text-sm hover:bg-gray-50 text-brand-600 font-medium">{t('nav.admin')}</Link>
+                      )}
+                      <hr className="my-1" />
+                      <button onClick={() => { logout(); setProfileOpen(false) }} className="block w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 text-destructive">{t('nav.logout')}</button>
+                    </div>
+                  </>
+                )}
               </div>
             ) : (
               <Link to="/login">

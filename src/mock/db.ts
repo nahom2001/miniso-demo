@@ -5,7 +5,7 @@
 import * as seed from './seed'
 import type { Order, Product, StockItem, Notification, SyncLogEntry, User, AuditEntry } from '@/domain/types'
 
-const STORAGE_KEY = 'miniso_demo_db_v2'
+const STORAGE_KEY = 'miniso_demo_db_v3'
 
 export interface DB {
   products: Product[]

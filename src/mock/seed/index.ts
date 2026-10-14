@@ -11,14 +11,14 @@ faker.seed(42) // deterministic
 
 // ─── Categories ──────────────────────────────────────────────────────────────
 export const categories: Category[] = [
-  { id: 'cat-1', parentId: null, name: { en: 'Plush Toys', am: 'ፕለሽ አሻንጉሊቶች' }, slug: 'plush-toys', image: 'https://picsum.photos/seed/cat1/400/300', seo: { slug: 'plush-toys', metaTitle: 'Plush Toys - Miniso', metaDescription: 'Cute plush toys' }, productCount: 12 },
-  { id: 'cat-2', parentId: null, name: { en: 'Stationery', am: 'ጽሕፈት መሳሪያ' }, slug: 'stationery', image: 'https://picsum.photos/seed/cat2/400/300', seo: { slug: 'stationery', metaTitle: 'Stationery - Miniso', metaDescription: 'Pens, notebooks, and more' }, productCount: 10 },
-  { id: 'cat-3', parentId: null, name: { en: 'Beauty & Skincare', am: 'ቆዳ እንክብካቤ' }, slug: 'beauty', image: 'https://picsum.photos/seed/cat3/400/300', seo: { slug: 'beauty', metaTitle: 'Beauty - Miniso', metaDescription: 'Skincare and beauty products' }, productCount: 14 },
-  { id: 'cat-4', parentId: null, name: { en: 'Home & Living', am: 'ቤት እና ኑሮ' }, slug: 'home', image: 'https://picsum.photos/seed/cat4/400/300', seo: { slug: 'home', metaTitle: 'Home & Living - Miniso', metaDescription: 'Home decoration and living essentials' }, productCount: 11 },
-  { id: 'cat-5', parentId: null, name: { en: 'Electronics Accessories', am: 'ኤሌክትሮኒክስ ዕቃዎች' }, slug: 'electronics', image: 'https://picsum.photos/seed/cat5/400/300', seo: { slug: 'electronics', metaTitle: 'Electronics - Miniso', metaDescription: 'Phone accessories and gadgets' }, productCount: 8 },
-  { id: 'cat-6', parentId: null, name: { en: 'Snacks & Food', am: 'መክሰስ እና ምግብ' }, slug: 'snacks', image: 'https://picsum.photos/seed/cat6/400/300', seo: { slug: 'snacks', metaTitle: 'Snacks - Miniso', metaDescription: 'Japanese snacks and more' }, productCount: 6 },
-  { id: 'cat-7', parentId: null, name: { en: 'Fashion Accessories', am: 'የፋሽን ዕቃዎች' }, slug: 'fashion', image: 'https://picsum.photos/seed/cat7/400/300', seo: { slug: 'fashion', metaTitle: 'Fashion - Miniso', metaDescription: 'Bags, hats, and accessories' }, productCount: 9 },
-  { id: 'cat-8', parentId: null, name: { en: 'Digital Vouchers', am: 'ዲጂታል ቫውቸር' }, slug: 'vouchers', image: 'https://picsum.photos/seed/cat8/400/300', seo: { slug: 'vouchers', metaTitle: 'Vouchers - Miniso', metaDescription: 'Gift vouchers and e-cards' }, productCount: 5 },
+  { id: 'cat-1', parentId: null, name: { en: 'Plush Toys', am: 'ፕለሽ አሻንጉሊቶች' }, slug: 'plush-toys', image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop', seo: { slug: 'plush-toys', metaTitle: 'Plush Toys - Miniso', metaDescription: 'Cute plush toys' }, productCount: 12 },
+  { id: 'cat-2', parentId: null, name: { en: 'Stationery', am: 'ጽሕፈት መሳሪያ' }, slug: 'stationery', image: 'https://images.unsplash.com/photo-1531346878377-a5be20888e57?w=400&h=300&fit=crop', seo: { slug: 'stationery', metaTitle: 'Stationery - Miniso', metaDescription: 'Pens, notebooks, and more' }, productCount: 10 },
+  { id: 'cat-3', parentId: null, name: { en: 'Beauty & Skincare', am: 'ቆዳ እንክብካቤ' }, slug: 'beauty', image: 'https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=400&h=300&fit=crop', seo: { slug: 'beauty', metaTitle: 'Beauty - Miniso', metaDescription: 'Skincare and beauty products' }, productCount: 14 },
+  { id: 'cat-4', parentId: null, name: { en: 'Home & Living', am: 'ቤት እና ኑሮ' }, slug: 'home', image: 'https://images.unsplash.com/photo-1603905756157-f6a8b70af7b0?w=400&h=300&fit=crop', seo: { slug: 'home', metaTitle: 'Home & Living - Miniso', metaDescription: 'Home decoration and living essentials' }, productCount: 11 },
+  { id: 'cat-5', parentId: null, name: { en: 'Electronics Accessories', am: 'ኤሌክትሮኒክስ ዕቃዎች' }, slug: 'electronics', image: 'https://images.unsplash.com/photo-1572536147248-ac59a8abfa4b?w=400&h=300&fit=crop', seo: { slug: 'electronics', metaTitle: 'Electronics - Miniso', metaDescription: 'Phone accessories and gadgets' }, productCount: 8 },
+  { id: 'cat-6', parentId: null, name: { en: 'Snacks & Food', am: 'መክሰስ እና ምግብ' }, slug: 'snacks', image: 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=400&h=300&fit=crop', seo: { slug: 'snacks', metaTitle: 'Snacks - Miniso', metaDescription: 'Japanese snacks and more' }, productCount: 6 },
+  { id: 'cat-7', parentId: null, name: { en: 'Fashion Accessories', am: 'የፋሽን ዕቃዎች' }, slug: 'fashion', image: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=400&h=300&fit=crop', seo: { slug: 'fashion', metaTitle: 'Fashion - Miniso', metaDescription: 'Bags, hats, and accessories' }, productCount: 9 },
+  { id: 'cat-8', parentId: null, name: { en: 'Digital Vouchers', am: 'ዲጂታል ቫውቸር' }, slug: 'vouchers', image: 'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=400&h=300&fit=crop', seo: { slug: 'vouchers', metaTitle: 'Vouchers - Miniso', metaDescription: 'Gift vouchers and e-cards' }, productCount: 5 },
 ]
 
 const amharicProductNames: Record<string, string> = {
@@ -57,42 +57,77 @@ function amName(en: string): string {
 }
 
 const productTemplates = [
-  // Plush
-  { name: 'Corgi Plush Toy', cat: 'cat-1', price: 850, tags: ['kawaii', 'dog', 'toy'], img: 'plush1' },
-  { name: 'Avocado Plush Pillow', cat: 'cat-1', price: 650, tags: ['pillow', 'food', 'cute'], img: 'plush2' },
-  { name: 'Totoro Stuffed Animal', cat: 'cat-1', price: 1200, tags: ['totoro', 'anime', 'toy'], img: 'plush3' },
-  { name: 'Kawaii Bear Plush', cat: 'cat-1', price: 750, tags: ['bear', 'kawaii'], img: 'plush4' },
+  // Plush Toys
+  { name: 'Corgi Plush Toy', cat: 'cat-1', price: 850, tags: ['kawaii', 'dog', 'toy'],
+    imgs: ['https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=600&fit=crop', 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=600&h=600&fit=crop', 'https://images.unsplash.com/photo-1599623560574-39d485900c95?w=600&h=600&fit=crop'] },
+  { name: 'Avocado Plush Pillow', cat: 'cat-1', price: 650, tags: ['pillow', 'food', 'cute'],
+    imgs: ['https://images.unsplash.com/photo-1631125915902-d8abe9225ff2?w=600&h=600&fit=crop', 'https://images.unsplash.com/photo-1567016432779-094069958ea5?w=600&h=600&fit=crop', 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&h=600&fit=crop'] },
+  { name: 'Totoro Stuffed Animal', cat: 'cat-1', price: 1200, tags: ['totoro', 'anime', 'toy'],
+    imgs: ['https://images.unsplash.com/photo-1559454403-b8fb88521f11?w=600&h=600&fit=crop', 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=600&fit=crop', 'https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?w=600&h=600&fit=crop'] },
+  { name: 'Kawaii Bear Plush', cat: 'cat-1', price: 750, tags: ['bear', 'kawaii'],
+    imgs: ['https://images.unsplash.com/photo-1611604548018-d56bbd85d681?w=600&h=600&fit=crop', 'https://images.unsplash.com/photo-1559454403-b8fb88521f11?w=600&h=600&fit=crop', 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=600&fit=crop'] },
+
   // Stationery
-  { name: 'Notebook Set A5', cat: 'cat-2', price: 320, tags: ['notebook', 'school'], img: 'stat1' },
-  { name: 'Color Pen Set 24', cat: 'cat-2', price: 480, tags: ['pen', 'color', 'art'], img: 'stat2' },
-  { name: 'Sticky Notes Pack', cat: 'cat-2', price: 180, tags: ['sticky', 'office'], img: 'stat3' },
-  { name: 'Planner 2025', cat: 'cat-2', price: 540, tags: ['planner', 'schedule'], img: 'stat4' },
-  // Beauty
-  { name: 'Rose Face Mask', cat: 'cat-3', price: 220, tags: ['mask', 'skincare', 'rose'], img: 'beauty1' },
-  { name: 'Lip Balm Set', cat: 'cat-3', price: 390, tags: ['lip', 'care'], img: 'beauty2' },
-  { name: 'Moisturizing Cream', cat: 'cat-3', price: 680, tags: ['cream', 'moisturizer'], img: 'beauty3' },
-  { name: 'Eye Shadow Palette', cat: 'cat-3', price: 890, tags: ['makeup', 'eyes'], img: 'beauty4' },
-  // Home
-  { name: 'Aromatherapy Diffuser', cat: 'cat-4', price: 1450, tags: ['aroma', 'relax'], img: 'home1' },
-  { name: 'Ceramic Mug', cat: 'cat-4', price: 380, tags: ['mug', 'coffee', 'ceramic'], img: 'home2' },
-  { name: 'Storage Box Set', cat: 'cat-4', price: 720, tags: ['storage', 'organize'], img: 'home3' },
-  { name: 'Scented Candle', cat: 'cat-4', price: 560, tags: ['candle', 'aroma'], img: 'home4' },
-  // Electronics
-  { name: 'Phone Stand', cat: 'cat-5', price: 280, tags: ['stand', 'phone'], img: 'elec1' },
-  { name: 'USB-C Cable', cat: 'cat-5', price: 350, tags: ['cable', 'usb-c', 'charging'], img: 'elec2' },
-  { name: 'Earphones', cat: 'cat-5', price: 890, tags: ['earphone', 'audio'], img: 'elec3' },
-  { name: 'Power Bank 10000', cat: 'cat-5', price: 1680, tags: ['power', 'battery'], img: 'elec4' },
-  // Snacks
-  { name: 'Matcha KitKat', cat: 'cat-6', price: 240, tags: ['kitkat', 'matcha', 'japanese'], img: 'snack1' },
-  { name: 'Pocky Sticks', cat: 'cat-6', price: 180, tags: ['pocky', 'chocolate', 'japanese'], img: 'snack2' },
-  { name: 'Mochi Ice Cream', cat: 'cat-6', price: 320, tags: ['mochi', 'japanese', 'sweet'], img: 'snack3' },
-  // Fashion
-  { name: 'Mini Crossbody Bag', cat: 'cat-7', price: 1350, tags: ['bag', 'fashion'], img: 'fashion1' },
-  { name: 'Baseball Cap', cat: 'cat-7', price: 680, tags: ['cap', 'hat', 'fashion'], img: 'fashion2' },
-  // Digital
-  { name: 'Miniso Gift Voucher 500', cat: 'cat-8', price: 500, tags: ['voucher', 'gift', 'digital'], img: 'voucher1', isDigital: true },
-  { name: 'Miniso Gift Voucher 1000', cat: 'cat-8', price: 1000, tags: ['voucher', 'gift', 'digital'], img: 'voucher2', isDigital: true },
-  { name: 'E-Gift Card', cat: 'cat-8', price: 250, tags: ['gift', 'card', 'digital'], img: 'voucher3', isDigital: true },
+  { name: 'Notebook Set A5', cat: 'cat-2', price: 320, tags: ['notebook', 'school'],
+    imgs: ['https://images.unsplash.com/photo-1531346878377-a5be20888e57?w=600&h=600&fit=crop', 'https://images.unsplash.com/photo-1517971071642-34a2d3eaac27?w=600&h=600&fit=crop', 'https://images.unsplash.com/photo-1455390582262-044cdead277a?w=600&h=600&fit=crop'] },
+  { name: 'Color Pen Set 24', cat: 'cat-2', price: 480, tags: ['pen', 'color', 'art'],
+    imgs: ['https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=600&h=600&fit=crop', 'https://images.unsplash.com/photo-1471107340929-a87cd0f5b5f3?w=600&h=600&fit=crop', 'https://images.unsplash.com/photo-1508615039623-a25605d2b022?w=600&h=600&fit=crop'] },
+  { name: 'Sticky Notes Pack', cat: 'cat-2', price: 180, tags: ['sticky', 'office'],
+    imgs: ['https://images.unsplash.com/photo-1568027762272-e4da8b386fe9?w=600&h=600&fit=crop', 'https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=600&h=600&fit=crop', 'https://images.unsplash.com/photo-1517971071642-34a2d3eaac27?w=600&h=600&fit=crop'] },
+  { name: 'Planner 2025', cat: 'cat-2', price: 540, tags: ['planner', 'schedule'],
+    imgs: ['https://images.unsplash.com/photo-1506784983877-45594efa4cbe?w=600&h=600&fit=crop', 'https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=600&h=600&fit=crop', 'https://images.unsplash.com/photo-1531346878377-a5be20888e57?w=600&h=600&fit=crop'] },
+
+  // Beauty & Skincare
+  { name: 'Rose Face Mask', cat: 'cat-3', price: 220, tags: ['mask', 'skincare', 'rose'],
+    imgs: ['https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=600&h=600&fit=crop', 'https://images.unsplash.com/photo-1612817288484-6f916006741a?w=600&h=600&fit=crop', 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=600&h=600&fit=crop'] },
+  { name: 'Lip Balm Set', cat: 'cat-3', price: 390, tags: ['lip', 'care'],
+    imgs: ['https://images.unsplash.com/photo-1586495777744-4e6232bf2177?w=600&h=600&fit=crop', 'https://images.unsplash.com/photo-1631729371254-42c2892f0e6e?w=600&h=600&fit=crop', 'https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=600&h=600&fit=crop'] },
+  { name: 'Moisturizing Cream', cat: 'cat-3', price: 680, tags: ['cream', 'moisturizer'],
+    imgs: ['https://images.unsplash.com/photo-1556228720-195a672e8a03?w=600&h=600&fit=crop', 'https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=600&h=600&fit=crop', 'https://images.unsplash.com/photo-1612817288484-6f916006741a?w=600&h=600&fit=crop'] },
+  { name: 'Eye Shadow Palette', cat: 'cat-3', price: 890, tags: ['makeup', 'eyes'],
+    imgs: ['https://images.unsplash.com/photo-1512207736890-6ffed8a84e8d?w=600&h=600&fit=crop', 'https://images.unsplash.com/photo-1503236823255-94609f598e71?w=600&h=600&fit=crop', 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=600&h=600&fit=crop'] },
+
+  // Home & Living
+  { name: 'Aromatherapy Diffuser', cat: 'cat-4', price: 1450, tags: ['aroma', 'relax'],
+    imgs: ['https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=600&h=600&fit=crop', 'https://images.unsplash.com/photo-1602928309168-a13f3a2b7855?w=600&h=600&fit=crop', 'https://images.unsplash.com/photo-1616321589084-c648ef89e6cd?w=600&h=600&fit=crop'] },
+  { name: 'Ceramic Mug', cat: 'cat-4', price: 380, tags: ['mug', 'coffee', 'ceramic'],
+    imgs: ['https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=600&h=600&fit=crop', 'https://images.unsplash.com/photo-1572119865084-43c285814d63?w=600&h=600&fit=crop', 'https://images.unsplash.com/photo-1534778101976-62847782c213?w=600&h=600&fit=crop'] },
+  { name: 'Storage Box Set', cat: 'cat-4', price: 720, tags: ['storage', 'organize'],
+    imgs: ['https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=600&h=600&fit=crop', 'https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=600&h=600&fit=crop', 'https://images.unsplash.com/photo-1616627561839-074385245ff6?w=600&h=600&fit=crop'] },
+  { name: 'Scented Candle', cat: 'cat-4', price: 560, tags: ['candle', 'aroma'],
+    imgs: ['https://images.unsplash.com/photo-1603905756157-f6a8b70af7b0?w=600&h=600&fit=crop', 'https://images.unsplash.com/photo-1602028915047-37269d1a73f7?w=600&h=600&fit=crop', 'https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=600&h=600&fit=crop'] },
+
+  // Electronics Accessories
+  { name: 'Phone Stand', cat: 'cat-5', price: 280, tags: ['stand', 'phone'],
+    imgs: ['https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=600&h=600&fit=crop', 'https://images.unsplash.com/photo-1591337676887-a217a6970a8a?w=600&h=600&fit=crop', 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600&h=600&fit=crop'] },
+  { name: 'USB-C Cable', cat: 'cat-5', price: 350, tags: ['cable', 'usb-c', 'charging'],
+    imgs: ['https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=600&h=600&fit=crop', 'https://images.unsplash.com/photo-1609592806596-b85c5fb3977f?w=600&h=600&fit=crop', 'https://images.unsplash.com/photo-1591337676887-a217a6970a8a?w=600&h=600&fit=crop'] },
+  { name: 'Earphones', cat: 'cat-5', price: 890, tags: ['earphone', 'audio'],
+    imgs: ['https://images.unsplash.com/photo-1572536147248-ac59a8abfa4b?w=600&h=600&fit=crop', 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&h=600&fit=crop', 'https://images.unsplash.com/photo-1484704849700-f032a568e944?w=600&h=600&fit=crop'] },
+  { name: 'Power Bank 10000', cat: 'cat-5', price: 1680, tags: ['power', 'battery'],
+    imgs: ['https://images.unsplash.com/photo-1609592806596-b85c5fb3977f?w=600&h=600&fit=crop', 'https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?w=600&h=600&fit=crop', 'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=600&h=600&fit=crop'] },
+
+  // Snacks & Food
+  { name: 'Matcha KitKat', cat: 'cat-6', price: 240, tags: ['kitkat', 'matcha', 'japanese'],
+    imgs: ['https://images.unsplash.com/photo-1587132137056-bfbf0166836e?w=600&h=600&fit=crop', 'https://images.unsplash.com/photo-1548907040-4baa42d10919?w=600&h=600&fit=crop', 'https://images.unsplash.com/photo-1575377222312-dd1a63a51638?w=600&h=600&fit=crop'] },
+  { name: 'Pocky Sticks', cat: 'cat-6', price: 180, tags: ['pocky', 'chocolate', 'japanese'],
+    imgs: ['https://images.unsplash.com/photo-1582058091505-f87a2e55a40f?w=600&h=600&fit=crop', 'https://images.unsplash.com/photo-1575377222312-dd1a63a51638?w=600&h=600&fit=crop', 'https://images.unsplash.com/photo-1548907040-4baa42d10919?w=600&h=600&fit=crop'] },
+  { name: 'Mochi Ice Cream', cat: 'cat-6', price: 320, tags: ['mochi', 'japanese', 'sweet'],
+    imgs: ['https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=600&h=600&fit=crop', 'https://images.unsplash.com/photo-1548907040-4baa42d10919?w=600&h=600&fit=crop', 'https://images.unsplash.com/photo-1582058091505-f87a2e55a40f?w=600&h=600&fit=crop'] },
+
+  // Fashion Accessories
+  { name: 'Mini Crossbody Bag', cat: 'cat-7', price: 1350, tags: ['bag', 'fashion'],
+    imgs: ['https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=600&h=600&fit=crop', 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=600&h=600&fit=crop', 'https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?w=600&h=600&fit=crop'] },
+  { name: 'Baseball Cap', cat: 'cat-7', price: 680, tags: ['cap', 'hat', 'fashion'],
+    imgs: ['https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=600&h=600&fit=crop', 'https://images.unsplash.com/photo-1556306535-0f09a537f0a3?w=600&h=600&fit=crop', 'https://images.unsplash.com/photo-1521369909029-2afed882baee?w=600&h=600&fit=crop'] },
+
+  // Digital Vouchers
+  { name: 'Miniso Gift Voucher 500', cat: 'cat-8', price: 500, tags: ['voucher', 'gift', 'digital'], isDigital: true,
+    imgs: ['https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=600&h=600&fit=crop', 'https://images.unsplash.com/photo-1607344645866-009c320b63e0?w=600&h=600&fit=crop', 'https://images.unsplash.com/photo-1518911709364-bfc499bed43b?w=600&h=600&fit=crop'] },
+  { name: 'Miniso Gift Voucher 1000', cat: 'cat-8', price: 1000, tags: ['voucher', 'gift', 'digital'], isDigital: true,
+    imgs: ['https://images.unsplash.com/photo-1607344645866-009c320b63e0?w=600&h=600&fit=crop', 'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=600&h=600&fit=crop', 'https://images.unsplash.com/photo-1518911709364-bfc499bed43b?w=600&h=600&fit=crop'] },
+  { name: 'E-Gift Card', cat: 'cat-8', price: 250, tags: ['gift', 'card', 'digital'], isDigital: true,
+    imgs: ['https://images.unsplash.com/photo-1518911709364-bfc499bed43b?w=600&h=600&fit=crop', 'https://images.unsplash.com/photo-1607344645866-009c320b63e0?w=600&h=600&fit=crop', 'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=600&h=600&fit=crop'] },
 ]
 
 export const products: Product[] = productTemplates.map((t, i) => ({
@@ -106,11 +141,7 @@ export const products: Product[] = productTemplates.map((t, i) => ({
   categoryIds: [t.cat],
   tags: t.tags,
   brand: 'Miniso',
-  images: [
-    `https://picsum.photos/seed/${t.img}a/600/600`,
-    `https://picsum.photos/seed/${t.img}b/600/600`,
-    `https://picsum.photos/seed/${t.img}c/600/600`,
-  ],
+  images: t.imgs,
   isDigital: t.isDigital ?? false,
   status: 'active' as const,
   prices: { ETB: t.price, USD: Math.round(t.price * 0.0175 * 100) / 100 },

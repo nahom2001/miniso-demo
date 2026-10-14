@@ -95,6 +95,6 @@ export const useCartStore = create<CartState>()(
         }
       },
     }),
-    { name: 'miniso_cart_v2' }
+    { name: 'miniso_cart_v3' }
   )
 )
