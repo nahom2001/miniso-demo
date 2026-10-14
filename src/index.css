@@ -55,8 +55,34 @@
 
   /* Print styles */
   @media print {
-    .no-print { display: none !important; }
-    body { background: white !important; }
+    /* Hide all chrome */
+    .no-print,
+    [data-no-print],
+    header,
+    footer,
+    nav,
+    aside { display: none !important; }
+
+    body {
+      background: white !important;
+      color: #111 !important;
+      font-size: 11pt !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    /* Let the receipt fill the page cleanly */
+    main {
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+
+    /* Receipt card: remove screen chrome */
+    #receipt-print {
+      border-radius: 0 !important;
+      box-shadow: none !important;
+      border: none !important;
+    }
   }
 }
 
