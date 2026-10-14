@@ -53,35 +53,16 @@
     @apply bg-gray-400;
   }
 
-  /* Print styles */
+  /* Print styles — minimal global rules, receipt page handles its own @media print */
   @media print {
-    /* Hide all chrome */
+    .screen-only,
     .no-print,
-    [data-no-print],
-    header,
-    footer,
-    nav,
-    aside { display: none !important; }
+    [data-no-print] { display: none !important; }
 
     body {
       background: white !important;
-      color: #111 !important;
-      font-size: 11pt !important;
       -webkit-print-color-adjust: exact;
       print-color-adjust: exact;
-    }
-
-    /* Let the receipt fill the page cleanly */
-    main {
-      padding: 0 !important;
-      margin: 0 !important;
-    }
-
-    /* Receipt card: remove screen chrome */
-    #receipt-print {
-      border-radius: 0 !important;
-      box-shadow: none !important;
-      border: none !important;
     }
   }
 }

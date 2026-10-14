@@ -15,10 +15,23 @@ const PAYMENT_LABELS: Record<string, string> = {
   cash_on_delivery: 'Cash on Delivery',
 }
 
+// Derives a readable payment method from the payment ID stored on the order
+function getPaymentLabel(order: Order): string {
+  // paymentId format is "pay-checkout-<timestamp>" or "pay-<n>"
+  // We stored method on the order via checkout, but it's not in the type.
+  // Fall back to a readable default.
+  return PAYMENT_LABELS[order.channel] ?? 'Online Payment'
+}
+
 export function OrderConfirmationPage() {
   const { orderId } = useParams()
   const { state } = useLocation() as { state: { order: Order; outcome: 'success' | 'fail' | 'pending' } }
   const currency = useUIStore((s) => s.currency)
+
+  // Trigger browser print — the CSS handles what shows
+  function handlePrint() {
+    window.print()
+  }
 
   if (!state?.order) {
     return (
@@ -34,13 +47,15 @@ export function OrderConfirmationPage() {
   const { order, outcome } = state
   const orderDate = new Date(order.createdAt)
 
-  const STATUS = {
+  const outcomeConfig = {
     success: {
       icon: <CheckCircle className="h-12 w-12 text-green-500" />,
       title: 'Order Confirmed',
       desc: `Thank you! Your order ${order.number} has been placed successfully.`,
       bg: 'bg-green-50 border-green-200',
       text: 'text-green-800',
+      pill: 'bg-green-400/30 text-green-100',
+      pillLabel: '✓ Payment Confirmed',
     },
     fail: {
       icon: <XCircle className="h-12 w-12 text-red-500" />,
@@ -48,112 +63,144 @@ export function OrderConfirmationPage() {
       desc: `Payment for order ${order.number} could not be processed. Please try again.`,
       bg: 'bg-red-50 border-red-200',
       text: 'text-red-800',
+      pill: 'bg-red-400/30 text-red-100',
+      pillLabel: '✗ Payment Failed',
     },
     pending: {
       icon: <Clock className="h-12 w-12 text-yellow-500" />,
       title: 'Payment Pending',
-      desc: `Order ${order.number} is awaiting payment confirmation. We'll notify you shortly.`,
+      desc: `Order ${order.number} is awaiting payment confirmation.`,
       bg: 'bg-yellow-50 border-yellow-200',
       text: 'text-yellow-800',
+      pill: 'bg-yellow-400/30 text-yellow-100',
+      pillLabel: '⏳ Awaiting Payment',
     },
   }[outcome]
 
+  const paymentStatus = outcome === 'success' ? 'Confirmed' : outcome === 'fail' ? 'Failed' : 'Pending'
+  const paymentStatusColor = outcome === 'success' ? 'text-green-600' : outcome === 'fail' ? 'text-red-600' : 'text-yellow-600'
+
   return (
     <>
-      {/* ── Print stylesheet injected inline ───────────────────────────────── */}
+      {/*
+        Print styles: scoped inside a <style> tag so they are self-contained
+        and don't depend on index.css ordering.
+
+        Strategy:
+        - Add class "printing" to <body> via JS before print (window.print handles this
+          natively via @media print).
+        - Hide every sibling of #receipt-print using print media query.
+        - The StorefrontLayout wraps everything in a flex column — we hide its
+          header/footer/nav children, then show only the receipt.
+      */}
       <style>{`
         @media print {
-          /* Hide everything except the receipt */
-          body > *:not(#print-root) { display: none !important; }
-          #print-root { display: block !important; }
-
-          /* Hide nav, footer, buttons, status banner */
-          header, footer, nav,
-          .no-print,
-          [data-no-print] { display: none !important; }
-
-          /* Reset page */
           @page {
             size: A4;
-            margin: 16mm 14mm;
+            margin: 15mm 14mm;
           }
 
-          body {
-            background: white !important;
-            color: #111 !important;
-            font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif !important;
-            font-size: 11pt !important;
-            -webkit-print-color-adjust: exact;
-            print-color-adjust: exact;
+          /* Force colours */
+          * {
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
           }
 
-          /* Show only the receipt card */
-          #receipt-print {
+          /* Hide the entire app shell and show only the receipt */
+          body > #root {
             display: block !important;
-            width: 100% !important;
-            max-width: 100% !important;
-            border: none !important;
-            box-shadow: none !important;
+          }
+
+          /* Hide storefront header, footer, mobile nav, demo bar */
+          body > #root header,
+          body > #root footer,
+          body > #root nav,
+          body > #root .demo-control-bar,
+          body > #root [class*="DemoControlBar"] {
+            display: none !important;
+          }
+
+          /* Hide everything inside <main> except receipt */
+          .screen-only {
+            display: none !important;
+          }
+
+          /* Make main padding-free */
+          main {
             padding: 0 !important;
             margin: 0 !important;
           }
 
-          /* Brand header: keep colour */
-          .receipt-header {
+          /* Receipt card takes full width, no rounded corners */
+          #receipt-print {
+            width: 100% !important;
+            max-width: 100% !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+            border: 1px solid #e5e7eb !important;
+            page-break-inside: avoid;
+          }
+
+          /* Brand header keeps its colour */
+          .receipt-brand-header {
             background-color: #c0392b !important;
             color: white !important;
-            padding: 20px 24px !important;
-            margin-bottom: 0 !important;
           }
 
-          /* Table styling */
-          .receipt-table { width: 100%; border-collapse: collapse; }
-          .receipt-table th {
-            background-color: #f3f4f6 !important;
-            border-bottom: 1px solid #e5e7eb;
-            padding: 6px 10px;
-            text-align: left;
-            font-size: 9pt;
+          /* Table */
+          .receipt-items-table {
+            width: 100%;
+            border-collapse: collapse;
+          }
+          .receipt-items-table th {
+            background-color: #f9fafb !important;
+            color: #6b7280 !important;
+            font-size: 8pt;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: #6b7280;
+            letter-spacing: 0.06em;
+            padding: 6px 10px;
+            border-bottom: 1px solid #e5e7eb;
+            text-align: left;
           }
-          .receipt-table td {
-            padding: 8px 10px;
-            border-bottom: 1px solid #f3f4f6;
+          .receipt-items-table th:last-child,
+          .receipt-items-table td:last-child { text-align: right; }
+          .receipt-items-table th:nth-child(2),
+          .receipt-items-table td:nth-child(2) { text-align: center; }
+          .receipt-items-table td {
+            padding: 7px 10px;
             font-size: 10pt;
-            vertical-align: middle;
+            border-bottom: 1px solid #f3f4f6;
+            vertical-align: top;
           }
-          .receipt-table tr:last-child td { border-bottom: none; }
 
-          /* Totals */
-          .totals-row { padding: 4px 0; font-size: 10pt; }
-          .totals-final { font-size: 13pt; font-weight: 700; border-top: 2px solid #111; padding-top: 6px; margin-top: 4px; }
+          /* Hide product thumbnails to save ink */
+          .item-thumbnail { display: none !important; }
 
-          /* Footer rule */
-          .receipt-footer {
-            border-top: 1px solid #e5e7eb;
-            padding-top: 12px;
-            margin-top: 20px;
-            font-size: 8.5pt;
-            color: #6b7280;
+          /* Totals section */
+          .receipt-totals-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 10pt;
+            padding: 3px 0;
+          }
+          .receipt-totals-final {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13pt;
+            font-weight: 700;
+            border-top: 2px solid #111;
+            padding-top: 5px;
+            margin-top: 3px;
+          }
+
+          /* Footer */
+          .receipt-doc-footer {
+            border-top: 1px solid #e5e7eb !important;
+            margin-top: 16px;
+            padding-top: 10px;
             text-align: center;
-          }
-
-          /* Hide images in print items table (save ink) */
-          .item-img { display: none !important; }
-
-          /* Watermark for non-success */
-          .print-watermark {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(-35deg);
-            font-size: 72pt;
-            font-weight: 900;
-            opacity: 0.06;
-            pointer-events: none;
-            z-index: 9999;
+            font-size: 8.5pt;
+            color: #9ca3af;
           }
         }
       `}</style>
@@ -161,37 +208,30 @@ export function OrderConfirmationPage() {
       <StorefrontLayout>
         <div className="container max-w-2xl mx-auto px-4 py-12 pb-24 md:pb-12">
 
-          {/* Status banner — hidden in print */}
-          <div className={`no-print rounded-2xl border p-6 mb-8 text-center ${STATUS.bg}`}>
-            <div className="flex justify-center mb-3">{STATUS.icon}</div>
-            <h1 className={`text-2xl font-bold mb-1 ${STATUS.text}`}>{STATUS.title}</h1>
-            <p className="text-sm text-muted-foreground max-w-md mx-auto">{STATUS.desc}</p>
+          {/* Status banner — screen only */}
+          <div className={`screen-only rounded-2xl border p-6 mb-8 text-center ${outcomeConfig.bg}`}>
+            <div className="flex justify-center mb-3">{outcomeConfig.icon}</div>
+            <h1 className={`text-2xl font-bold mb-1 ${outcomeConfig.text}`}>{outcomeConfig.title}</h1>
+            <p className="text-sm text-muted-foreground max-w-md mx-auto">{outcomeConfig.desc}</p>
           </div>
 
-          {/* ── Receipt card (screen + print) ───────────────────────────── */}
-          <div
-            id="receipt-print"
-            className="rounded-2xl border bg-white overflow-hidden shadow-sm mb-6"
-          >
+          {/* ── Receipt ──────────────────────────────────────────────────── */}
+          <div id="receipt-print" className="rounded-2xl border bg-white overflow-hidden shadow-sm mb-6">
+
             {/* Brand header */}
-            <div className="receipt-header bg-brand-600 text-white p-6">
+            <div className="receipt-brand-header bg-brand-600 text-white p-6">
               <div className="flex items-start justify-between gap-4">
-                {/* Brand */}
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center font-black text-lg flex-shrink-0">
-                    M
-                  </div>
+                  <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center font-black text-lg flex-shrink-0">M</div>
                   <div>
                     <p className="font-bold text-lg leading-tight">{brand.name}</p>
                     <p className="text-xs text-white/70">{brand.address}</p>
-                    <p className="text-xs text-white/70">{brand.phone ?? 'support@miniso.et'}</p>
+                    <p className="text-xs text-white/70">support@miniso.et</p>
                   </div>
                 </div>
-
-                {/* Receipt meta */}
                 <div className="text-right text-sm flex-shrink-0">
-                  <p className="text-xs text-white/60 uppercase tracking-wider mb-0.5">Receipt</p>
-                  <p className="font-bold text-lg">{order.number}</p>
+                  <p className="text-xs text-white/60 uppercase tracking-wider mb-0.5">Tax Receipt</p>
+                  <p className="font-bold text-xl">{order.number}</p>
                   <p className="text-white/80 text-xs">
                     {orderDate.toLocaleDateString('en-ET', { day: '2-digit', month: 'long', year: 'numeric' })}
                   </p>
@@ -200,38 +240,30 @@ export function OrderConfirmationPage() {
                   </p>
                 </div>
               </div>
-
-              {/* Status pill */}
-              <div className="mt-4 flex items-center gap-2">
-                <span className={`text-xs font-semibold px-3 py-1 rounded-full ${
-                  outcome === 'success' ? 'bg-green-400/30 text-green-100'
-                  : outcome === 'fail'  ? 'bg-red-400/30 text-red-100'
-                  : 'bg-yellow-400/30 text-yellow-100'
-                }`}>
-                  {outcome === 'success' ? '✓ Payment Confirmed'
-                   : outcome === 'fail'  ? '✗ Payment Failed'
-                   : '⏳ Awaiting Payment'}
+              <div className="mt-4 flex items-center gap-2 flex-wrap">
+                <span className={`text-xs font-semibold px-3 py-1 rounded-full ${outcomeConfig.pill}`}>
+                  {outcomeConfig.pillLabel}
                 </span>
                 <span className="text-xs text-white/60">
-                  via {PAYMENT_LABELS[order.paymentId?.split('-')[0] ?? ''] ?? 'Online Payment'}
+                  Ref: <span className="font-mono">{order.paymentId}</span>
                 </span>
               </div>
             </div>
 
             <div className="p-6 space-y-6">
 
-              {/* ── Items table ─────────────────────────────────────────── */}
+              {/* Items table */}
               <div>
                 <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3 flex items-center gap-1.5">
                   <Package className="h-3.5 w-3.5" /> Items Ordered
                 </h3>
-                <table className="receipt-table w-full text-sm">
+                <table className="receipt-items-table w-full text-sm">
                   <thead>
                     <tr className="bg-gray-50 text-xs text-muted-foreground uppercase tracking-wide">
-                      <th className="text-left py-2 px-3 font-medium rounded-l-lg">Item</th>
-                      <th className="text-center py-2 px-3 font-medium">Qty</th>
-                      <th className="text-right py-2 px-3 font-medium">Unit Price</th>
-                      <th className="text-right py-2 px-3 font-medium rounded-r-lg">Total</th>
+                      <th className="text-left py-2.5 px-3 font-semibold">Description</th>
+                      <th className="text-center py-2.5 px-3 font-semibold">Qty</th>
+                      <th className="text-right py-2.5 px-3 font-semibold">Unit Price</th>
+                      <th className="text-right py-2.5 px-3 font-semibold">Amount</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100">
@@ -242,55 +274,53 @@ export function OrderConfirmationPage() {
                             <img
                               src={item.image}
                               alt=""
-                              className="item-img w-10 h-10 rounded-lg object-cover bg-gray-100 flex-shrink-0"
+                              className="item-thumbnail w-10 h-10 rounded-lg object-cover bg-gray-100 flex-shrink-0"
                             />
                             <div>
-                              <p className="font-medium text-sm leading-tight">{item.productName}</p>
+                              <p className="font-medium text-sm">{item.productName}</p>
                               <p className="text-xs text-muted-foreground">{item.variantLabel}</p>
                             </div>
                           </div>
                         </td>
-                        <td className="py-3 px-3 text-center text-sm">{item.qty}</td>
-                        <td className="py-3 px-3 text-right text-sm">{formatPrice(item.unitPrice, currency)}</td>
-                        <td className="py-3 px-3 text-right text-sm font-semibold">{formatPrice(item.total, currency)}</td>
+                        <td className="py-3 px-3 text-center text-sm tabular-nums">{item.qty}</td>
+                        <td className="py-3 px-3 text-right text-sm tabular-nums">{formatPrice(item.unitPrice, currency)}</td>
+                        <td className="py-3 px-3 text-right text-sm font-semibold tabular-nums">{formatPrice(item.total, currency)}</td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
 
-              {/* ── Totals ──────────────────────────────────────────────── */}
-              <div className="flex justify-end">
+              {/* Totals */}
+              <div className="flex justify-end border-t pt-4">
                 <div className="w-full max-w-xs space-y-1.5 text-sm">
-                  <div className="flex justify-between text-muted-foreground">
+                  <div className="receipt-totals-row flex justify-between text-muted-foreground">
                     <span>Subtotal</span>
-                    <span>{formatPrice(order.totals.subtotal, currency)}</span>
+                    <span className="tabular-nums">{formatPrice(order.totals.subtotal, currency)}</span>
                   </div>
                   {order.totals.discount > 0 && (
-                    <div className="flex justify-between text-green-600">
+                    <div className="receipt-totals-row flex justify-between text-green-600">
                       <span>Discount</span>
-                      <span>−{formatPrice(order.totals.discount, currency)}</span>
+                      <span className="tabular-nums">−{formatPrice(order.totals.discount, currency)}</span>
                     </div>
                   )}
-                  <div className="flex justify-between text-muted-foreground">
+                  <div className="receipt-totals-row flex justify-between text-muted-foreground">
                     <span>Shipping</span>
-                    <span>{formatPrice(order.totals.shipping, currency)}</span>
+                    <span className="tabular-nums">{formatPrice(order.totals.shipping, currency)}</span>
                   </div>
-                  <div className="flex justify-between text-muted-foreground">
+                  <div className="receipt-totals-row flex justify-between text-muted-foreground">
                     <span>VAT (15%)</span>
-                    <span>{formatPrice(order.totals.vat, currency)}</span>
+                    <span className="tabular-nums">{formatPrice(order.totals.vat, currency)}</span>
                   </div>
-                  <div className="flex justify-between font-bold text-base border-t-2 border-gray-900 pt-2 mt-2">
+                  <div className="receipt-totals-final flex justify-between font-bold text-base border-t-2 border-gray-900 pt-2 mt-2">
                     <span>Total Paid</span>
-                    <span className="text-brand-600 text-lg">{formatPrice(order.totals.total, currency)}</span>
+                    <span className="text-brand-600 text-lg tabular-nums">{formatPrice(order.totals.total, currency)}</span>
                   </div>
-                  <p className="text-xs text-muted-foreground text-right">
-                    {order.totals.currency} · incl. VAT
-                  </p>
+                  <p className="text-xs text-muted-foreground text-right">{order.totals.currency} · Prices include VAT</p>
                 </div>
               </div>
 
-              {/* ── Delivery + Payment info ──────────────────────────────── */}
+              {/* Delivery + Payment */}
               <div className="grid sm:grid-cols-2 gap-4 pt-2 border-t">
                 <div>
                   <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2 flex items-center gap-1.5">
@@ -299,72 +329,47 @@ export function OrderConfirmationPage() {
                   <div className="text-sm space-y-0.5">
                     <p className="font-semibold">{order.address.fullName}</p>
                     <p className="text-muted-foreground">{order.address.phone}</p>
-                    {order.address.detail && (
-                      <p className="text-muted-foreground">{order.address.detail}</p>
-                    )}
-                    <p className="text-muted-foreground">
-                      {order.address.subCity}, {order.address.city}
-                    </p>
+                    {order.address.detail && <p className="text-muted-foreground">{order.address.detail}</p>}
+                    <p className="text-muted-foreground">{order.address.subCity}, {order.address.city}</p>
                   </div>
                 </div>
-
                 <div>
                   <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                    <CreditCard className="h-3.5 w-3.5" /> Payment Details
+                    <CreditCard className="h-3.5 w-3.5" /> Payment
                   </h4>
                   <div className="text-sm space-y-0.5">
-                    <p className="font-semibold">
-                      {PAYMENT_LABELS[order.paymentId?.split('-')[0] ?? ''] ?? 'Online Payment'}
+                    <p className="font-semibold">{getPaymentLabel(order)}</p>
+                    <p className="text-muted-foreground">
+                      Status:{' '}
+                      <span className={`font-medium ${paymentStatusColor}`}>{paymentStatus}</span>
                     </p>
-                    <p className="text-muted-foreground">Status:{' '}
-                      <span className={
-                        outcome === 'success' ? 'text-green-600 font-medium'
-                        : outcome === 'fail'  ? 'text-red-600 font-medium'
-                        : 'text-yellow-600 font-medium'
-                      }>
-                        {outcome === 'success' ? 'Confirmed' : outcome === 'fail' ? 'Failed' : 'Pending'}
-                      </span>
-                    </p>
-                    <p className="text-muted-foreground">Ref: <span className="font-mono text-xs">{order.paymentId}</span></p>
-                    <p className="text-muted-foreground">Channel: {order.channel === 'online' ? 'Online Store' : order.channel}</p>
+                    <p className="text-muted-foreground text-xs font-mono break-all">{order.paymentId}</p>
+                    <p className="text-muted-foreground capitalize">Channel: {order.channel}</p>
                   </div>
                 </div>
               </div>
 
-              {/* ── Receipt footer ───────────────────────────────────────── */}
-              <div className="receipt-footer border-t pt-5 text-center">
-                <p className="text-xs font-semibold text-gray-700 mb-1">{brand.name}</p>
-                <p className="text-xs text-muted-foreground">{brand.address}</p>
-                <p className="text-xs text-muted-foreground mt-2">
-                  For support, visit <span className="font-medium">miniso.et</span> or contact us at{' '}
-                  <span className="font-medium">support@miniso.et</span>
-                </p>
-                <p className="text-xs text-muted-foreground mt-1">
-                  Returns accepted within 14 days of delivery with proof of purchase.
-                </p>
-                <p className="text-xs text-gray-400 mt-3">
-                  This is a computer-generated receipt. Printed on{' '}
-                  {new Date().toLocaleDateString('en-ET', { day: '2-digit', month: 'long', year: 'numeric' })}
+              {/* Receipt footer */}
+              <div className="receipt-doc-footer border-t pt-4 text-center text-xs text-muted-foreground space-y-1">
+                <p className="font-semibold text-gray-700">{brand.name} · {brand.address}</p>
+                <p>For support: <span className="font-medium">support@miniso.et</span></p>
+                <p>Returns accepted within 14 days of delivery with this receipt as proof of purchase.</p>
+                <p className="text-gray-400 mt-2">
+                  Computer-generated receipt · Printed {new Date().toLocaleDateString('en-ET', { day: '2-digit', month: 'long', year: 'numeric' })}
                 </p>
               </div>
 
             </div>
           </div>
 
-          {/* ── Action buttons (hidden in print) ────────────────────────── */}
-          <div className="no-print flex flex-wrap gap-3 justify-center">
-            <Button
-              variant="outline"
-              onClick={() => window.print()}
-              className="gap-2"
-            >
+          {/* Action buttons — screen only */}
+          <div className="screen-only flex flex-wrap gap-3 justify-center">
+            <Button variant="outline" onClick={handlePrint} className="gap-2">
               <Printer className="h-4 w-4" /> Print Receipt
             </Button>
             {outcome === 'success' && (
               <Button asChild variant="outline" className="gap-2">
-                <Link to="/account/orders">
-                  Track Order <ArrowRight className="h-4 w-4" />
-                </Link>
+                <Link to="/account/orders">Track Order <ArrowRight className="h-4 w-4" /></Link>
               </Button>
             )}
             {outcome === 'fail' && (

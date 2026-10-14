@@ -34,7 +34,7 @@ export function StorefrontLayout({ children }: Props) {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       {/* Top bar */}
-      <div className="bg-brand-600 text-white text-xs py-2 px-4 text-center">
+      <div className="screen-only bg-brand-600 text-white text-xs py-2 px-4 text-center">
         Free delivery in Addis Ababa on orders over Br 1,500 •{' '}
         <button onClick={() => setLanguage(language === 'en' ? 'am' : 'en')} className="underline ml-2">
           {language === 'en' ? 'አማርኛ' : 'English'}
@@ -46,7 +46,7 @@ export function StorefrontLayout({ children }: Props) {
       </div>
 
       {/* Main header */}
-      <header className="sticky top-0 z-40 bg-white border-b shadow-sm">
+      <header className="screen-only sticky top-0 z-40 bg-white border-b shadow-sm">
         <div className="container max-w-7xl mx-auto px-4 h-16 flex items-center gap-4">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 flex-shrink-0">
@@ -161,7 +161,7 @@ export function StorefrontLayout({ children }: Props) {
       <main className="flex-1">{children}</main>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white mt-16">
+      <footer className="screen-only bg-gray-900 text-white mt-16">
         <div className="container max-w-7xl mx-auto px-4 py-12 grid grid-cols-2 md:grid-cols-4 gap-8">
           <div>
             <div className="flex items-center gap-2 mb-4">
@@ -203,7 +203,7 @@ export function StorefrontLayout({ children }: Props) {
       </footer>
 
       {/* Mobile bottom nav */}
-      <div className="md:hidden fixed bottom-0 inset-x-0 bg-white border-t z-40 safe-area-bottom">
+      <div className="screen-only md:hidden fixed bottom-0 inset-x-0 bg-white border-t z-40 safe-area-bottom">
         <div className="flex items-center justify-around h-14">
           <Link to="/" className="flex flex-col items-center gap-0.5 text-xs text-gray-500 hover:text-brand-600">
             <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>

@@ -32,20 +32,27 @@ export function SearchPage() {
   const language = useUIStore((s) => s.language)
 
   const [search, setSearch] = useState(q)
+  const [debouncedSearch, setDebouncedSearch] = useState(q)
   const [selectedCat, setSelectedCat] = useState(catParam)
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 5000])
   const [sortBy, setSortBy] = useState<SortKey>('relevance')
   const [showFilters, setShowFilters] = useState(false)
   const [activeTag, setActiveTag] = useState('')
 
+  // Debounce search input → re-query after 300ms idle
+  useEffect(() => {
+    const timer = setTimeout(() => setDebouncedSearch(search), 300)
+    return () => clearTimeout(timer)
+  }, [search])
+
   const { data: categories } = useQuery({ queryKey: ['categories'], queryFn: getCategories })
   const { data: products, isLoading } = useQuery({
-    queryKey: ['products', search, selectedCat],
-    queryFn: () => getProducts({ search: search || undefined, categoryId: selectedCat || undefined }),
+    queryKey: ['products', debouncedSearch, selectedCat],
+    queryFn: () => getProducts({ search: debouncedSearch || undefined, categoryId: selectedCat || undefined }),
   })
 
   // Sync URL → state
-  useEffect(() => { setSearch(q) }, [q])
+  useEffect(() => { setSearch(q); setDebouncedSearch(q) }, [q])
   useEffect(() => { setSelectedCat(catParam) }, [catParam])
   // Apply sort from URL param
   useEffect(() => {
